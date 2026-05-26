@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 
-import { supabase } from "./supabase";
+const SB_URL = "https://gwihocbcugdfpzwjoepk.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3aWhvY2JjdWdkZnB6d2pvZXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NTc0NDEsImV4cCI6MjA5NTMzMzQ0MX0.qS_ReCNEGngLfoPM4K8XmXKKgGSbN-X7hTKpBPzGHQs";
+const H = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+
+const get  = async (t, q='') => { const r = await fetch(`${SB_URL}/rest/v1/${t}${q}`, {headers:H}); return r.json(); };
+const post = async (t, b)    => { const r = await fetch(`${SB_URL}/rest/v1/${t}`, {method:'POST', headers:H, body:JSON.stringify(b)}); return r.json(); };
+const patch= async (t, f, b) => { await fetch(`${SB_URL}/rest/v1/${t}?${f}`, {method:'PATCH', headers:H, body:JSON.stringify(b)}); };
+const del  = async (t, f)    => { await fetch(`${SB_URL}/rest/v1/${t}?${f}`, {method:'DELETE', headers:H}); };
 
 const PALETTE = ['#E8521A','#2563EB','#7C3AED','#059669','#DB2777','#D97706','#0EA5E9','#84CC16'];
 const PRIORITY_CONFIG = {

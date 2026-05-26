@@ -47,8 +47,13 @@ export default function App() {
   const [newMember,setNewMember]=useState('');
   const [form,setForm]=useState({title:'',description:'',assignee:'',deadline:'',priority:'medium'});
 
-  useEffect(()=>{ loadAll(); },[]);
-
+  useEffect(()=>{
+  loadAll();
+  const onVisible=()=>{ if(document.visibilityState==='visible') loadAll(); };
+  document.addEventListener('visibilitychange', onVisible);
+  const timer=setInterval(loadAll, 60000);
+  return ()=>{ document.removeEventListener('visibilitychange', onVisible); clearInterval(timer); };
+},[]);
   const loadMembers = async () => {
     try {
       const data = await get('members','?order=id');
